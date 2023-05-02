@@ -1,0 +1,261 @@
+---
+title: "Final Project"
+author: "Jo Dean-Dick"
+date: "4/29/2023"
+output: pdf_document
+urlcolor: purple
+linkcolor: red
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(ggplot2)
+```
+
+
+
+1.  Bar chart - "Percentage Change in Net Worth by Industry (2008-2022)" - This chart shows the percentage change in net worth for each industry between 2008 and 2022. By ordering the industries by the magnitude of the percentage change, we can identify the industries that have gained the most in the aftermath of the financial crashes of housing in 2008 and the pandemic in 2020. The chart helps us understand which industries have thrived despite the economic turmoil caused by the pandemic.
+    
+
+
+```{r Q2(a), echo=TRUE, eval=TRUE}
+
+
+# Filter the data to include only years between 2008 and 2022
+wbl_filtered <- wbl %>% filter(year >= 2008)
+
+# Calculate the percentage change in net worth for each industry
+wbl_pct_change <- wbl_filtered %>%
+  group_by(industry) %>%
+  summarize(pct_change = ((max(net_worth_usd_billion) - min(net_worth_usd_billion)) / min(net_worth_usd_billion)) * 100) %>%
+  arrange(desc(pct_change))
+
+# Create a bar chart to display the percentage change in net worth for each industry
+ggplot(wbl_pct_change, aes(x = industry, y = pct_change)) +
+  geom_bar(stat = "identity", fill = "dodgerblue") +
+  xlab("Industry") +
+  ylab("% Change in Net Worth") +
+  ggtitle("Percentage Change in Net Worth by Industry (2008-2022)") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
+
+2.  Scatter plot - "Percentage Change in Net Worth by Industry and Individual (2008-2022)" - This chart shows the relationship between the percentage change in net worth for each individual and their industry affiliation. By assigning different colors to the data points based on the industry, we can see the distribution of individuals across industries and how their net worth changed over time. The regression line helps us identify the overall trend and the degree of correlation between the percentage change in net worth and industry affiliation.
+    
+
+
+```{r Q2(b), echo=TRUE, eval=TRUE}
+# Calculate the percentage change in net worth for each individual
+wbl_individuals <- wbl_filtered %>%
+  group_by(name, industry) %>%
+  summarize(pct_change = ((max(net_worth_usd_billion) - min(net_worth_usd_billion)) / min(net_worth_usd_billion)) * 100)
+
+# Create a scatter plot to display the relationship between the percentage change in net worth and industry affiliation
+ggplot(wbl_individuals, aes(x = industry, y = pct_change, color = industry)) +
+  geom_point() +
+  xlab("Industry") +
+  ylab("% Change in Net Worth") +
+  ggtitle("Percentage Change in Net Worth by Industry and Individual (2008-2022)") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  geom_smooth(method = "lm", se = FALSE)
+
+
+```
+
+3.  Pie chart - "Distribution of Industries Among the Top 100 Wealthiest Individuals in 2022" - This chart shows the distribution of industries among the top 100 wealthiest individuals in 2022. By visualizing the proportion of individuals across different industries, we can understand the concentration of wealth in certain industries and the extent of inequality gaps worldwide. The chart helps us answer the research question by providing insights into the demographics of the wealthiest individuals and the industries that contribute the most to their net worth.
+
+```{r Q2(c), echo=TRUE, eval=TRUE}
+for (year in years) {
+  # Filter the data to include only the current year and sort by net worth in descending order
+  wbl_year <- wbl %>% filter(year == !year) %>% arrange(desc(net_worth_usd_billion))
+
+  # Select the top 100 wealthiest individuals for the current year
+  wbl_top100 <- wbl_year %>% head(100)
+  
+  # Get the unique industries present in the current year's top 100 wealthiest individuals
+  industries <- unique(wbl_top100$industry)
+  
+  # Create a pie chart to display the distribution of industries among the top 100 wealthiest individuals for the current year
+  p <- ggplot(wbl_top100, aes(x = "", fill = industry)) +
+    geom_bar(width = 1, color = "white") +
+    scale_fill_manual(values = scales::hue_pal()(length(industries))) +
+    coord_polar("y", start = 0) +
+    xlab("") +
+    ylab("") +
+    ggtitle(paste("Distribution of Industries Among the Top 100 Wealthiest Individuals in", year)) +
+    theme_void() +
+    theme(legend.position = "right")
+  
+  # Print the pie chart
+  print(p)
+}
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+### (d)
+What proportion of the variance is explained by these two components?
+```{r Q2(d), echo=TRUE, eval=TRUE}
+# Scatter plot to show the relationship between net worth and year
+plot(wbl$year, wbl$net_worth_usd_billion, xlab = "Year", ylab = "Net Worth (USD billions)",
+     main = "Net Worth vs Year")
+
+# Pie chart to show the degree of wealth consolidation
+# Calculate the total net worth
+total_net_worth <- sum(wbl$net_worth_usd_billion)
+
+# Sort the net worth column in descending order
+sorted_net_worth <- sort(wbl$net_worth_usd_billion, decreasing = TRUE)
+
+# Calculate the cumulative sum of net worth
+cumulative_sum <- cumsum(sorted_net_worth)
+
+# Calculate the percentage of total net worth held by each individual
+percentage <- cumulative_sum / total_net_worth * 100
+
+# Calculate the index of the top 1% and 0.1%
+top1_index <- which(percentage >= 50)[1]
+top01_index <- which(percentage >= 5)[1]
+
+# Create a vector of labels for the pie chart
+labels <- c(paste("Top 50% (", round(percentage[top1_index], 2), "%)"),
+            paste("Top 5% (", round(percentage[top01_index], 2), "%)"),
+            "Remaining")
+
+# Create a vector of corresponding values for the pie chart
+values <- c(sum(sorted_net_worth[1:top1_index]),
+            sum(sorted_net_worth[1:top01_index]),
+            total_net_worth - sum(sorted_net_worth[1:top1_index]))
+
+# Create the pie chart with labels and colors
+pie(values, labels = labels, col = c("red", "blue", "green"),
+    main = "Degree of Wealth Consolidation")
+
+# Create a list of years to loop through
+years <- unique(wbl$year)
+
+# Loop through the years and create a pie chart for each year
+for (year in years) {
+  # Subset the data to only include individuals from the current year
+  year_data <- wbl[wbl$year == year, ]
+  
+  # Calculate the total net worth of all individuals in the current year
+  total_net_worth <- sum(year_data$net_worth_usd_billion)
+  
+  # Calculate the net worth held by the top 10% of individuals in the current year
+  top_10_net_worth <- sum(year_data$net_worth_usd_billion[rank(year_data$net_worth_usd_billion, ties.method = "min", na.last = "keep") > length(year_data$net_worth_usd_billion)*0.9])
+  
+  # Calculate the net worth held by the top 1% of individuals in the current year
+  top_1_net_worth <- sum(year_data$net_worth_usd_billion[rank(year_data$net_worth_usd_billion, ties.method = "min", na.last = "keep") > length(year_data$net_worth_usd_billion)*0.99])
+  
+  # Create a data frame with the net worth breakdown for the current year
+  pie_data <- data.frame(category = c("Top 1%", "Top 10%", "Rest"), 
+                         value = c(top_1_net_worth, top_10_net_worth, total_net_worth - top_10_net_worth - top_1_net_worth))
+  
+  # Create the pie chart
+  pie(pie_data$value, labels = pie_data$category, main = paste("Net Worth Distribution in", year))
+}
+
+
+```
+
+
+
+### (e)
+What are the loadings(PCA coefficients) for each of the original numerical columns?
+```{r Q2(e), echo=TRUE, eval=TRUE}
+loadings <- iris_pca$rotation
+
+loadings
+```
+
+### (f)
+Apply K-means clustering to the four numeric columns with three clusters.
+```{r Q2(f), echo=TRUE, eval=TRUE}
+
+iris_num <- iris[,1:4]
+
+k <- 3
+
+kmeans_fit <- kmeans(iris_num, centers = k)
+
+kmeans_fit
+
+```
+
+### (g)
+Apply K-means clustering to the two principal components with three clusters.
+```{r Q2(g), echo=TRUE, eval=TRUE}
+
+
+iris_pca_scores <- as.data.frame(iris_pca$x[,1:2])
+
+k <- 3
+
+kmeans_fit <- kmeans(iris_pca_scores, centers = k)
+
+kmeans_fit
+
+```
+
+### (h)
+Which of the two K-means clusterings is more accurate at predicting the subspecies correctly?
+
+__Answer__: The second clustering has fewer misclassifications of virginicia and versicolor.
+
+
+
+
+# Problem 3 
+Use the following exploratory data analysis projects about candy preferences:   
+**[the-ultimate-halloween-candy-power-ranking](https://fivethirtyeight.com/videos/the-ultimate-halloween-candy-power-ranking/)**
+to provide brief responses to the following: 
+ 
+### (A) 
+What research questions are the articles trying to answer? Where does your favorite candy rank in their list?
+
+__Answer__: The Ultimate Halloween Candy Power Ranking article aims to identify the most popular fun-sized candy for Halloween. The research question the article is trying to answer is, “What Halloween candy do people most prefer?”
+
+The article provides a list of candies and their win percentages, with Reese’s Peanut Butter Cups ranked as number one, followed by Reese’s Miniatures, Twix, Kit Kat, and Snickers. The rank of any favorite candy will depend on its win percentage relative to the other candies in the list.
+
+
+### (B) 
+Can you tell where the underlying data came from? 
+
+__Answer__: The underlying data for the candy power ranking article came from an online survey where 8,371 different IP addresses voted on about 269,000 randomly generated matchups. The survey results are not representative of the general population and cannot be considered a scientific survey.
+
+
+### (C) 
+What are some other ways you could use to determine which candy  is best?
+
+__Answer__: Other ways to determine the best candy could include conducting a survey with a larger sample size that is representative of the general population, analyzing sales data, or conducting taste tests with a panel of experts.
+
+
+### (D) 
+What type of regression is used in the candy power ranking article? How does the interpretation of the coefficients match up with what we discussed in class?
+
+__Answer__: A multiple linear regression model was used in the candy power ranking article to determine the relationship between the candy characteristics (chocolate, fruity, caramel, peanutyalmondy, nougat, crispedricewater, hard, bar, pluribus) and the dependent variable (winpercent).
+
+
+### (E) 
+What do you think about the visualizations and examples in these pieces?
+
+__Answer__: The visualizations and examples in the candy power ranking article are effective in presenting the data in an easy-to-understand format. The article presents a clear and concise ranking of the candies, making it easy for the reader to identify the most popular candies. 
