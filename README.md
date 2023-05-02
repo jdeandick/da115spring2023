@@ -27,9 +27,9 @@ The resulting table, shown above, indicates the percent of total income for each
 
 Alternative Methods Considered:
 
-While we used a horizontal stacked bar chart to visualize the total income by sector and year, we also considered other options. One alternative was to use a heat map, which could provide a more precise visualization of the proportion of total income that each year contributed to the sector's total. However, we decided against using a heat map because it would not allow us to easily compare the total income of each sector.
+While I used a horizontal stacked bar chart to visualize the total income by sector and year, wI also considered other options. One alternative was to use a heat map, which could provide a more precise visualization of the proportion of total income that each year contributed to the sector's total. However, I decided against using a heat map because it would not allow us to easily compare the total income of each sector.
 
-Another option was to use a line graph to visualize the changes in the percent total income for each sector over time. However, we chose not to use a line graph because it would not provide an overview of the total income by sector, which was important to answer our research question.
+Another option was to use a line graph to visualize the changes in the percent total income for each sector over time. However, i chose not to use a line graph because it would not provide an overview of the total income by sector, which was important to answer the research question.
 
 Additional Analysis:
 
