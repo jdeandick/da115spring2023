@@ -25,6 +25,20 @@ Next, I calculated the total income for each sector before and after the pandemi
 
 The resulting table, shown above, indicates the percent of total income for each sector before and after the pandemic and the difference in percent total income between the two periods. The Technology and Healthcare and Pharmaceuticals sectors had the most significant gains in percent total income, with increases of 5.99% and 2.69%, respectively.
 
+Alternative Methods Considered:
+
+While we used a horizontal stacked bar chart to visualize the total income by sector and year, we also considered other options. One alternative was to use a heat map, which could provide a more precise visualization of the proportion of total income that each year contributed to the sector's total. However, we decided against using a heat map because it would not allow us to easily compare the total income of each sector.
+
+Another option was to use a line graph to visualize the changes in the percent total income for each sector over time. However, we chose not to use a line graph because it would not provide an overview of the total income by sector, which was important to answer our research question.
+
+Additional Analysis:
+
+An additional analysis that could be carried out is to explore the relationship between the gains made by the Technology and Healthcare and Pharmaceuticals sectors and the pandemic's impact on society. This analysis could investigate the link between the pandemic and the increased demand for technology and healthcare services. Additionally, it would be beneficial to compare the changes in income of the billionaire class to those in the lower-income brackets to identify any disparities in the economic recovery.
+
+Additional Data:
+
+To extend this analysis, additional data on the global economy, unemployment rates, and the pandemic's impact on society would be useful. It would also be beneficial to have data on individual companies within each sector to analyze the factors contributing to their success or loss.
+
 Conclusion:
 
 In conclusion, my analysis identified the sectors that gained the most and lost the most in the aftermath of the pandemic's financial upheavals. The Technology and Healthcare and Pharmaceuticals sectors saw the most significant gains, while the Finance and Insurance and Media and Communications sectors experienced the most significant losses. These findings can help businesses and policymakers make informed decisions about investing in sectors that have thrived despite the pandemic's economic turmoil.
