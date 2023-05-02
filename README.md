@@ -10,7 +10,18 @@ The first step in the analysis was to visualize the total income by sector and y
 
 Next, I calculated the total income for each sector before and after the pandemic. To achieve this, I grouped the sector_income_year dataframe by sector and year, and summed the total income to create the sector_income dataframe. I then filtered the data to obtain the pre-pandemic and post-pandemic dataframes, where pre-pandemic refers to data before 2020, and post-pandemic refers to data from 2020 onwards. I calculated the percentage of total income earned before and after the pandemic for each sector and merged the pre-pandemic and post-pandemic dataframes to create the pct_total_income dataframe.
 
-sector percent_total_income_pre percent_total_income_post diff_percent_total_income 1 Technology 11.4 17.4 5.99 2 Healthcare and Pharmaceuticals 3.52 6.21 2.69 3 Industrial Goods and Services 15.3 16.8 1.48 4 Agriculture and Food Production 6.23 6.84 0.610 5 Construction and Real Estate 9.68 8.21 -1.47 6 Consumer Goods and Services 17.1 15.6 -1.48 7 Energy and Utilities 4.69 3.16 -1.53 8 Diversified 9.44 7.56 -1.88 9 Media and Communications 8.42 6.36 -2.06 10 Finance and Insurance 14.1 11.8 -2.36
+| sector                           | percent_total_income_pre | percent_total_income_post | diff_percent_total_income |
+|---------------------------------|--------------------------|---------------------------|---------------------------|
+| Technology                      | 11.4                     | 17.4                      | 5.99                      |
+| Healthcare and Pharmaceuticals | 3.52                     | 6.21                      | 2.69                      |
+| Industrial Goods and Services  | 15.3                     | 16.8                      | 1.48                      |
+| Agriculture and Food Production| 6.23                     | 6.84                      | 0.610                     |
+| Construction and Real Estate   | 9.68                     | 8.21                      | -1.47                     |
+| Consumer Goods and Services    | 17.1                     | 15.6                      | -1.48                     |
+| Energy and Utilities           | 4.69                     | 3.16                      | -1.53                     |
+| Diversified                    | 9.44                     | 7.56                      | -1.88                     |
+| Media and Communications       | 8.42                     | 6.36                      | -2.06                     |
+| Finance and Insurance          | 14.1                     | 11.8                      | -2.36                     |
 
 The resulting table, shown above, indicates the percent of total income for each sector before and after the pandemic and the difference in percent total income between the two periods. The Technology and Healthcare and Pharmaceuticals sectors had the most significant gains in percent total income, with increases of 5.99% and 2.69%, respectively.
 
